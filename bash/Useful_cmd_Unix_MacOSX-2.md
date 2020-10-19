@@ -5,10 +5,13 @@
 # find path expression
 $ whoami # show the login user
 hanmeiTang
+
 [TSCC] ~/ $ whoami
 hat003
+
 $ echo $HOME # show your home directory
 /Users/hanmeiTang
+
 $ groups # show unix groups that you are belong to, this actually shows permission
 staff everyone localaccounts _appserverusr admin _appserveradm _lpadmin com.apple.sharepoint.group.1 _appstore _lpoperator _developer com.apple.access_ftp com.apple.access_screensharing com.apple.access_ssh
 ```
@@ -17,6 +20,7 @@ staff everyone localaccounts _appserverusr admin _appserveradm _lpadmin com.appl
 ```bash
 [TSCC] ~/ $ groups # this is clear on tscc!
 ong-group gaussian-users vasp-users csd450
+
 [TSCC] mix/ $ ls -la # Now you know 'hat003' is login user and 'ong-group' is unix group with permission
 total 17
 drwxr-xr-x  5 hat003 ong-group  5 Jun 19 15:27 .
