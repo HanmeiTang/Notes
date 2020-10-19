@@ -1,6 +1,6 @@
 # Initial set up guide
 
-This is a work space setup for a brand-new laptop with Mac OSX system. I am trying to reproduce MAVRL initial setup guide, which was in Mavrl wiki but recently gone.
+This is a work space setup for a brand-new laptop with Mac OSX system.
 
 ## Step 1: Install Xcode
 
@@ -92,59 +92,7 @@ To go to that environment, just type:
 $ source activate my_env
 ```
 
-## Step 6: Get a GitHub account and request access to MAVRL group
-
-Please ask the Github administrator to compelete this step.
-
-## Step 7: Clone and setup the relevant Github repos
-
-Before you setup the repos, it is generally advised that you keep all your
-repos in a single directory. E.g., $HOME/repos.
-
-### Pymatgen, pymatgen-db, custodian, fireworks
-
-These are to be installed in developmental mode from source. You will be
-working with these a lot.
-
-```shell
-$ git clone git@github.com:materialsproject/pymatgen.git            
-$ cd pymatgen
-$ python setup.py develop
-```
-
-Do the same for the pymatgen-db, custodian and fireworks repos.
-
-### Pymacy
-
-To be installed in developmental mode from source. You will be working with
-this a lot as well. This is the private overall repo for the MAVRL.
-
-```shell
-$ git clone git@github.com:materialsvirtuallab/pymacy.git
-$ cd pymacy
-$ python setup.py develop
-```
-
-## Step 8: VASP Setup
-
-You need the VASP psuedopotential files in order to generate VASP input files.
-These are provided in the pymacy repo under resources. 
-
-Add a VASP_PSP_DIR to your .pmgrc.yaml, by running the following.
-
-```shell
-$ pmg config --add PMG_VASP_PSP_DIR /path/to/pymacy/resources/VASP_PSP
-```
-
-Test that you have set it up correctly by typing:
-
-```shell
-$ python -c 'from pymatgen.io.vasp import Potcar; print(Potcar(["Li_sv", "O"]))'
-```
-
-There should be no errors. Otherwise, you have not done setup correctly.
-
-## Step 9: IDE
+## Step 6: IDE
 
 An Integrated Development Environment (IDE) makes it easier for you to code and 
 maintain good style, especially for Python. But this is purely a preference
@@ -163,18 +111,7 @@ $ brew cask install pycharm-ce
 
 It is unlikely you need anything more than the community version.
 
-## Step 10: Familiarize yourselves with git, python and pymatgen
-
-Learn how to commit and push changes with git. The model is that you should be 
-creating branches for anything that you do, and you should *commit often*.
-
-Pymatgen has extensive documentation at http://pymatgen.org. Read and learn to
-use it. A hour spent figuring out how to work with pymatgen will save you 100
-hours over a year (and probably more as you become more familiar).
-
-Read the materialsvirtuallab Coding guidelines, and follow them strictly.
-
-## Step 11: Other recommended software
+## Step 7: Other recommended software
 
 Here are some recommended software. Most can be installed via homebrew via
 `brew install` or `brew cask install`.  Note that you can use 
@@ -196,14 +133,6 @@ Here are some recommended software. Most can be installed via homebrew via
   ```bash
   $ brew cask install alfred
   ```
-* Mendeley: Citation manager. This is not optional.
-  ```bash
-  $ brew cask install mendeley-desktop
-  ```
-* VESTA: For viewing crystal structures.
-  ```bash
-  $ brew cask install vesta
-  ```
 * coreutils: GNU version of core utilities like ls, etc., which are more updated
   than the version that Mac comes with.
   ```bash
@@ -215,5 +144,4 @@ Here are some recommended software. Most can be installed via homebrew via
   ```
 
 ## References
-1. [Install Python 3 on Mac](https://wsvincent.com/install-python3-mac/)
-2. [mavrl_setup_for_mac.md](https://github.com/materialsvirtuallab/pymacy/edit/master/resources/mavrl_setup_for_mac.md)
+* [Install Python 3 on Mac](https://wsvincent.com/install-python3-mac/)
