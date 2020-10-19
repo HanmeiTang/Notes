@@ -1,2 +1,2 @@
 # Notes
-My learning notes collection
+This is a collection of my online course notes. 
