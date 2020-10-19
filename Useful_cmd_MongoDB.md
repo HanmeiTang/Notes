@@ -1,5 +1,5 @@
 
-## MongoDB Query examples
+# MongoDB Query examples
 
 ### Find a field w/wo a specific tag
 
@@ -34,7 +34,7 @@ db.getCollection('organic_mol_pbe').find(
   {"dir_name": 1, "output.final_energy": 1, "task_id": 1})
 ```
 
-## MongoDB Update examples
+# MongoDB Update examples
 
 ### Delete what you find, simply change `find` to `deleteMany`
 
