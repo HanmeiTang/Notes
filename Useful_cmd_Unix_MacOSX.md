@@ -153,5 +153,6 @@ $ find ~/repos/hatGit/ -name "*.py" -and -not -path *xxx*# "xxx" is excluded fro
 /Users/hanmeiTang/repos/hatGit//lib/neb/diff_abc.py
 ```
 
-## Reference
+## Reference (6/13/2016)
 * I only recorded those I don't know from [Unix MacOS X](https://www.lynda.com/Mac-OS-tutorials/Unix-Mac-OS-X-Users/78546-2.html)
+
