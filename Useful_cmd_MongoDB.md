@@ -44,12 +44,12 @@ db.getCollection('organic_mol').deleteMany({"dir_name": {'$regex' : '.*' + 'come
 
 ### Update field
 ```JavaScript
-# Example 1
+// Example 1
 db.getCollection('fireworks').update(
     {"fw_id": 1050},
     {"$set": {"spec._tasks.0.user_incar_settings.EDIFF": 0.1}})
     
-# Example 2, substitute with data type given
+// Example 2, substitute with data type given
 db.getCollection('fireworks').update(
     {"fw_id": 1}, 
     {"$set": {"spec.max_steps": NumberInt(25000)}})
