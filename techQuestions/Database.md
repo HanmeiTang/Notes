@@ -48,7 +48,7 @@ ER Model is used to model the logical view of the system from a data perspective
     * total participation: a person must have an id
     * partial participation: a person may have a passport
 
-## relational model
+## Relational Model
 Relational model represents how data is stored in relational databases, in form of relations or tables.
 
 * **Attribute**: properties define a relation
