@@ -125,7 +125,7 @@ If two or more conflicting operations are in different threads and are not prope
   ```
 ### How to avoid data race?
 By **synchronization**
-1. Lock: The first method to implement synchromization is lock == **mutual exclusion** by creating a **critical section** (不可以被多个线程/进程同时执行的部分). No two concurrent processes are in their critical section at the same time. 可是问题解决了吗？并没有，消除了不确定性，还有随机性。
+1. Lock: The first method to implement synchronization is lock == **mutual exclusion** by creating a **critical section** (不可以被多个线程/进程同时执行的部分). No two concurrent processes are in their critical section at the same time. 可是问题解决了吗？并没有，消除了不确定性，还有随机性。
 2. Condition synchronization
 3. Atomicity
 
@@ -155,7 +155,7 @@ By **synchronization**
       }
     }
     
-    public synchromized void decrease() {
+    public synchronized void decrease() {
       value--;
     }
     
@@ -177,7 +177,7 @@ By **synchronization**
       }
     }
     
-    public static synchromized void decrease() {
+    public static synchronized void decrease() {
       value--;
     }
     
