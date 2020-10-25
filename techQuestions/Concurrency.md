@@ -17,6 +17,7 @@ Both concepts are multitasking. If parallalization occurs, there must exist conc
 Semantically, the fundamental difference between a "process" and a "thread" is if they have independent memory space. Communication is better in multi-thread implementations than multi-process implementations.
 * **process**: an independent execution of instructions with independent memory space (heap, stack or OS resource).
 * **thread**: an independent execution of instructions with shared memory space. 
+* Example: IE Explore (one tab is a single thread --> crush if one thread used up all virtual memory) vs Chrome (one tab is a process --> costly)
 
 ### When did we see concurrency in the past?
 ```Java
@@ -111,7 +112,7 @@ If two or more conflicting operations are in different threads and are not prope
 ### When does data race occur?
   1. more than one operation work on the same momory location
   2. at least one operation is write to the same memory location
-  3. at least two of those operations are concurrent
+  3. at least two of those operations are concurrent // we want to block this condition to avoid data race
   
   ```java
   // This is pseudo code of a data race example
@@ -123,11 +124,12 @@ If two or more conflicting operations are in different threads and are not prope
     int b = a + 1; 
   ```
 ### How to avoid data race?
-By **synchronization** (lock)
-1. The first method to implement synchromization is lock == **mutual exclusion** by creating a **critical section** (不可以被多个线程/进程同时执行的部分). No two concurrent processes are in their critical section at the same time. 可是问题解决了吗？并没有，消除了不确定性，还有随机性。
-2. 其他方法？？？
+By **synchronization**
+1. Lock: The first method to implement synchromization is lock == **mutual exclusion** by creating a **critical section** (不可以被多个线程/进程同时执行的部分). No two concurrent processes are in their critical section at the same time. 可是问题解决了吗？并没有，消除了不确定性，还有随机性。
+2. Condition synchronization
+3. Atomicity
 
-### What is the lock (mutual exclusion) exactly in Java?
+### What is the lock (mutual exclusion, or mutex) exactly in Java?
 * a lock has a two operations: lock and unlock.
   ```java
   // this is pseudo code
