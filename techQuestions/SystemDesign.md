@@ -20,15 +20,15 @@
   * Step 3: Understanding bottlenecks
   * Step 4: Scaling your abstract design
 
-### Additional information: Two models
+### Implementation details: Two models
 1. push model - 适合主动push，非常积极发信息，每个user存的是这个user能看的post
-  1.1 what being pushed (define user schema): user, story
-  1.2 u2.getStories()
-    1.2.1 locate the user
-    1.2.2 get post
-  1.3 u2.postStories() // this is slow when followers are a lot
-    1.3.1 get followers
-    1.3.2 update all followers data
+  * what being pushed (define user schema): user, story
+  * u2.getStories()
+    * locate the user
+    * get post
+  * u2.postStories() // this is slow when followers are a lot
+    * get followers
+    * update all followers data
 
 ```text
          [  Aggregator  ]
@@ -44,3 +44,67 @@
 
 ## Design a URL Shorten Service
 
+### Step 1: Use cases and constraints
+* Read/Write pattern: 
+  * Read: use the short url to access ther long url
+  * Write: convert long url to the short url
+* Use case/contraints
+  * Read >> Write
+  * support update? (if the data is final, we don't need to worry about data update)
+  * data size
+    * 1 million access user, 1% write 99% read
+    * 1 billion MAU (monthly active users), 10% of those people use it to write, which produces 
+      * 100M URLs * 12 month = 1.28 Billion URL
+      * 2kb * 1.28B = 2TB
+      * This means disk storage is not a problem
+    * Traffic - if everything is stoerd on disk
+      * latency and speed of common media (memory, network, disk)
+      * 50k/s QPS is okay but may not handle peak load at large scale
+
+  * computational cost
+    * MD5/SHA hashing algorithm complexity (this is low)
+    * compared to Machine Learning, blockchain
+  * network bandwidth
+    * not a big issue
+    * 10 Gb/s?
+
+### Step 2: Abstract/Basic Design
+* request/response (input/output)
+* storage format
+  * Map<shortURL, longURL>
+  * getLongURL(String shorURL)
+  * getShortURL(String longURL)
+* Key function `convert`
+  * Hash function
+    * [md5](https://en.wikipedia.org/wiki/MD5) 通常也用来验证完整性, output is a 128-bit data
+    * optimization --> convert byte array to a hex
+    * long url string -> `byte[] hash(String url)` (md5) -> byte[] -> [`Base64 encoding`](https://en.wikipedia.org/wiki/Base64) -> short url string -> truncate --> ss (--> collision ss')
+  * Randomize
+    * if the output string is not long, we must deal with collision
+    * long : short instead of short : long to speed up the check process
+  * Counter
+    * 0..9 A ... z
+    * concurrency --> different treads occupy different counter range
+
+### Step 3: Understanding bottlenecks
+Identify the bottleneck
+* Data size
+  * It is okay to store a few TB data
+  * When QPS is high
+    * 50 MB/sec continuously -- memory
+    * <10 MB/sec random access -- disk
+    * assume we need 100 byte * 1e6 qps = 100 Mb/sec, then a single machine is not enough
+    * Memory + disk read is slow, may consider using more machine or even a distributed system
+  
+### Step 4: Scaling your abstract design
+1. Ways to spread your data onto multiple machines
+  * sharding = to split your data into partitions/shards, and each machine takes one or more partitions
+    * 2TB data split into 40 boxes and each machine handle 50GB, which can be sotred in memory
+    * We don't want a db because the data structure is super simple, kind of overkill
+  * replication
+    * Need to maintain replica consistency in practice
+    * 2TB data replicated onto 10 boxes, each machine keeps 2TB data, but handle 1/10 traffic
+  * sharding + replication
+2. need a rule to shard data to 10 partitions
+3. need a dispartcher to route the request to a storage box
+4. A more efficient solution? Cache on dispatcher node.
