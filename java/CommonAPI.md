@@ -44,8 +44,8 @@
 
 
 ## `StringBuilder` // ~ `ArrayList<Character>`
-Note: StringBuffer is deprecated! 同Vector, Slack有線程安全問題 non-thread safe
-Internally, StringBuilder is very similar to ArrayList (a resizable array)
+Note: ~~`StringBuffer`~~ is deprecated! 同`Vector`, `Stack`有線程安全問題 non-thread safe
+Internally, `StringBuilder` is very similar to `ArrayList` (a resizable array)
 * StringBuilder(String s);
 * StringBuilder(int capacity);
 * StringBuilder append(char c);
@@ -59,7 +59,7 @@ Internally, StringBuilder is very similar to ArrayList (a resizable array)
 * String toString();
 * boolean deleteCharAt(int index); // may use O(n) or/and use O(n) extra space
 
-## `[Set<E>]`
+## `[Set<E>]` Interface
 * boolean add(Object e);
 * boolean contains(Object e); // complexity = O(1)
 * boolean isEmpty();
@@ -71,12 +71,12 @@ Internally, StringBuilder is very similar to ArrayList (a resizable array)
 * boolean add(E e); // amortize O(1)
 * boolean remove(Object o);  // amortize O(1)
 * boolean contains(Object o);  // amortize O(1)
-* void clear(); // ??
+* void clear(); // O(n)
 * int size();
 * boolean isEmpty();
 
-## `[Map<K,V>]`
-HashTable在Java 4及以前使用，有线程安全问题，且不允许null key
+## `[Map<K,V>]` Interface
+`HashTable`在Java 4及以前使用，有线程安全问题，且不允许null key
 * boolean containsKey(Object Key);
 * boolean containsValue(Object Value); // 複雜度 O(n)
 * Set<Map.Entry<K,V>> entrySet();
@@ -89,16 +89,29 @@ HashTable在Java 4及以前使用，有线程安全问题，且不允许null key
 * V getOrDefault(Object Key, V defaultValue) // recommended
 
 ## `HashMap`
-// TODO
+~~`HashTable`~~ is deprecated, which doesn't allow `null` key. `HashTable` and `Vector` are shynchronized, which introduce a lot of performance penalty. `HashMap` allows one `null` key. 
+* V get(K key);
+* boolean put(K key, V val);
+* boolean set(K key, V val);
+* boolean remove(K key);
 
-## `[Map.Entry<K,V>]`
+
+## `[Map.Entry<K,V>]` Interface
 * K getKey();
 * V getValue();
 * V setValue();
 
 ## `Object`
-* boolean equals() // compare address, equivalent to “==”
+The root class for any Java class. In Java, there is a contract betwwen `equals()` and `hashCode()`, the developers need to maintain
+1. If one equals two, it is a must that one.hashCode() == two.hashCode()
+2. If one.hashCode() == two.hashCode(), it is not necessary one.equals(two)
+When you overrde equals(), definitely override hashCode() as well.
 
+* `boolean equals(Object obj)` // default `return (this == obj)`, override it to compare value
+* `int hashCode()` // default returns a unique hash value based on its memory address
+  * The performance of HashMap solely depends on how good the hashCode() is.
+  * Easy, fast and efficient
+  * Minimize collision, as evenly distributed as possible
 
 ## `Integer`
 * int intValue(); // get the value
@@ -121,6 +134,13 @@ static int binarySearch(int[] a, int key);
 static int Arrays.binarySearch(int[] a, int leftInclusive, int rightExclusive, int key);
 static int binarySearch(char[] a, char key);
 static int binarySearch(Object[] a, Object key);
+
+// Fill value
+void Arrays.fill(Object[], null);
+
+// Math
+int Math.max(int a, int b)
+int Math.abs(int num)
+
+
 ```
-
-
