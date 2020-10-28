@@ -68,7 +68,12 @@ Internally, StringBuilder is very similar to ArrayList (a resizable array)
 * Object[] toArray();
 
 ## `HashSet<E>`
-// TODO
+* boolean add(E e); // amortize O(1)
+* boolean remove(Object o);  // amortize O(1)
+* boolean contains(Object o);  // amortize O(1)
+* void clear(); // ??
+* int size();
+* boolean isEmpty();
 
 ## `[Map<K,V>]`
 HashTable在Java 4及以前使用，有线程安全问题，且不允许null key
