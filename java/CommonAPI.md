@@ -242,8 +242,9 @@ Internally, `StringBuilder` is very similar to `ArrayList` (a resizable array)
 
  Collection.reverseOrder() // reverse the natural order defined by a class implementing Comparable interface
  PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer> (11, Collections.reversOrder());
- 
- 
  ```
  
- 
+ * [`Math.random()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html#random--)
+ ```java
+ int rand = (int)(Math.random() * range) + min; 
+```
