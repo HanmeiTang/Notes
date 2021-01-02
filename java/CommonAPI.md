@@ -209,10 +209,21 @@ Internally, `StringBuilder` is very similar to `ArrayList` (a resizable array)
 
  ```java
  import java.util.Arrays;
+ 
+ // Copy
+ int[] Arrays.copyOfRange(int[] list, int start, int end);
+ 
+ // Compare
+ boolean Arrays.equals(int[] a, int[] b); // for 1d array
+ boolean Arrays.deepEquals(Object[] a, Object[] b); // for higher dimension
 
  // Sorting
  int[] Arrays.sort(int[] list);
  Integer[] Arrays.sort(numbers, Collections.reverseOrder());
+ 
+ // representation
+ String toString(int[] a);  // for 1d array
+ String deepToString(Object[] a);  // for higher dimension
 
  // Binary search
  static int Arrays.binarySearch(int[] a, int key);
