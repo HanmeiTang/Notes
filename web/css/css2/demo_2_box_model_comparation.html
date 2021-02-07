@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS放在这里为方便演示，大家不要学我 -->
+    <style>
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;  /* 1rem = 16px, 3rem = 48px 推荐使用rem */
+            width: 300px;
+            height: 200px;
+            background-color: #17808a;
+            padding: 20px;
+            border: 10px solid #510b53;
+            margin: 30px;
+        }
+
+        #id_1 {
+            box-sizing: border-box;
+        }
+
+        #id_2{
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 方便演示用了id， 大家不要学我 -->
+    <div id="id_1">house 1</div>
+
+    <div id="id_2">house 2</div>
+
+    <!-- Tip:
+        1. 推荐使用border-box, why ?
+    -->
+
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS放在这里为方便演示，大家不要学我 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box1 {
+            margin-top: 40px;
+            margin-left: 40px;
+            height: 300px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: grey;
+        }
+
+        #box2 {
+            height: 200px;
+            width: 200px;
+            background-color: pink;
+        }
+
+        #box3 {
+            height: 100px;
+            width: 100px;
+            background-color: blue;
+
+        }
+
+        /* Uncoment to see */
+
+        /* case 1 */
+        /* #box3 {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        } */
+
+        /* case 2 */
+        /* #box1 {
+            position: relative;
+        }
+        #box3 {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        } */
+
+        /* case 3 */
+        /* #box2 {
+            position: relative;
+        }
+        #box3 {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        } */
+    </style>
+
+</head>
+
+<body>
+
+    <div id="box1">
+        <div id="box2">
+            <div id="box3">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tip 常规使用方法：
+        1. 一般父级元素使用相对定位，不给任何偏移
+        2. 想定位的元素使用绝对定位，会相对于这个父级元素来定位
+    -->
+
+</html>

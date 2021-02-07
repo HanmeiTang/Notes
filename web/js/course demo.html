@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>6/13 Notes</title>
+    <style>
+    /*    div{*/
+    /*    width: 100px;*/
+    /*    height: 100px;*/
+    /*    bakcground-color: #000000;*/
+    /*}*/
+        div{
+            border: 1px solid #ccc;
+        }
+        .a {
+            height: 400px;
+            width: 400px;
+            background-color: lightgrey;
+        }
+    .b {
+        height: 200px;
+        width: 200px;
+        background-color: lightpink;
+        margin-left: 400px;
+    }
+    .c {
+        height: 100px;
+        width: 100px;
+        background-color: lightblue;
+        margin-left: 200px;
+    }
+    .box {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        background-color: #CCCCCC;
+    }
+    .apply {
+        position: absolute;
+        bottom: 20px;
+        width: 80px;
+        height: 30px;
+        background-color: #23B6FF;
+        text-align: center;
+        line-height: 30px;
+    }
+    </style>
+</head>
+<body>
+ <h1>Event</h1>
+
+<!-- 1. 沒有把js和html分離-->
+<!-- 2. 原生js不推薦，不方便修改-->
+<!-- 3. but react是個例外-->
+<div onclick="alert('hahha')"></div>
+ <div class="a">
+     <div class="b">
+         <div class="c"></div>
+     </div>
+ </div>
+ <script>
+     var oBox = document.getElementsByName('box')[0],
+         oApply = document.getElementsByName('apply')[0];
+     oBox.addEventListener('click', function(e){
+         console.log('course');
+         e.stopPropagation();
+     }, false);
+     oApply.addEventListener('click', function(e){
+         console.log('apply');
+         e.stopPropagation();
+     }, false);
+ </script>
+ <script>
+     var oA = document.getElementsByClassName("a")[0],
+         oB = document.getElementsByClassName("b")[0],
+         oC = document.getElementsByClassName("c")[0];
+
+     // bubbling
+     oA.addEventListener('click', function(){
+         console.log('a....bubbling')
+     }, false);
+
+     oB.addEventListener('click', function(){
+         console.log('b....bubbling')
+     }, false);
+
+     oC.addEventListener('click', function(){
+         console.log('c....bubbling')
+     }, false);
+
+
+     // capturing
+     oA.addEventListener('click', function(){
+         console.log('a....capturing')
+     }, true);
+
+     oB.addEventListener('click', function(){
+         console.log('b....capturing')
+     }, true);
+
+     oC.addEventListener('click', function(){
+         console.log('c....capturing')
+     }, true);
+
+ </script>
+<script>
+    // How to bind event --> 2 ways
+
+    // 1 -> on+event-name
+    var oDiv = document.getElementsByTagName('div')[0];
+    // add a 'onclick' attribute to oDiv object
+    // oDiv 從此可以點擊
+    // in fact onclick is a call back function
+    // 創建時沒有執行，只有滿足觸發條件才會執行
+    // 事件被觸發時執行事件處理函數
+    // oDiv 本身有click屬性
+    // 格式：on+事件名
+    // 查詢event: https://developer.mozilla.org/en-US/docs/Web/Events
+    oDiv.onclick = function() {
+        console.log('click');
+        oDiv.style.backgroundColor = 'pink';
+    };
+    // 對同一event （CLICK)不可以重複綁定
+    // 比如硬定義兩個，第二個會完全覆蓋第一個
+    // 變成pink不會被執行
+    // oDiv.onclick = function() {
+    //     console.log('click');
+    //     oDiv.style.backgroundColor = 'pink';
+    // };
+    //
+    // oDiv.onmouseover = function (){
+    //     console.log('mouseover');
+    //     oDiv.style.width = 200+'px';
+    // };
+
+    // 2 -> addEventListener
+    // addEventListener is inhiriated from EventTarget object
+    oDiv.addEventListener('click', function(){
+        console.log(3);
+        // setTimeout
+    }, false);
+
+    // 對同一事件進行第二次綁定，這是可以的
+    // 點擊打印3和4
+    oDiv.addEventListener('click', function(){
+        console.log(4)
+    }, false);
+
+
+
+</script>
+</body>
+</html>

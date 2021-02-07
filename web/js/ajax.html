@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+
+</head>
+<body>
+
+<h1>Hello, Ajax!</h1>
+<script>
+    // // step 1: create
+    // // xrh 幫助實現ajax
+    // var xhr = new XMLHttpRequest();
+    //
+    // // step2: config
+    // // url method async/sync
+    // xhr.open('GET', url, true); // true is async
+    //
+    // // step 3: send
+    // xhr.send();
+    //
+    // // step4: listen
+    // // request
+    // xhr.onload = function(){ // When request is successful
+    //     // this is a listening function
+    //     // this is a callback function
+    //     // when request has been received by the backend
+    //     // this function will be implemented
+    //
+    //     // response
+    //     if (xhr.status === 200) {
+    //         var data = JSON.parse(xhr.responseText);
+    //         console.log(data);
+    //         var h1 = document.getElementsByTagName('h1')[0];
+    //         console.log(h1.innerHTML);
+    //     }
+    // };
+    // xhr.onerror = function(){
+    //     console.log('error');
+    // };
+
+
+    // fe <-> be
+    // 如果要封裝整個4步ajax操作
+    // method: GET/POST
+    // url: input url
+    // data:
+    // successCb: call back function 傳遞信息，好像javascript不能return
+    function ajax(method, url, data, successCb, errorCb) {
+        // step 1. Create an instance of object
+        var xhr = new XMLHttpRequest();
+
+        // step 2: config
+        // url method async/sync
+        xhr.open(method, url, true);
+
+        // step 3: send
+        if (data === null){
+            xhr.send()
+        } else {
+            xhr.setRequestHeader("content-type", // content type
+                "application/json;charset=utf-8")
+        }
+
+        // step 4: listen
+        xhr.onload = function (){
+            if(xhr.status === 200) {
+                // use successCb to pass data
+                successCb(xhr.responseText)
+            }
+        };
+
+        xhr.onerror = function(){
+            console.log('error');
+        };
+    }
+
+var url = 'http://petstore.swagger.io/v2/swagger.json';
+ajax('GET', url, null, function(data){
+    var obj = JSON.parse(data);
+    console.log(obj);
+}, function(){
+    console.log('error')
+})
+
+</script>
+</body>
+</html>

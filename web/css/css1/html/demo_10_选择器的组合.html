@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 写在这里方便演示，大家不要学我 -->
+    <style>
+        /*  div标签下面所有p标签 */
+        /* div p {
+            color: red;
+        } */
+
+        /*  div标签下面p标签子元素 */
+        /* div > p {
+            color: red;
+        } */
+
+        /* .demo选中的标签下面所有p标签 */
+        /* .demo p {
+            color: red;
+        } */
+
+        /* div.demo选中的标签下面所有p标签 */
+        div.demo p {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="demo">
+        <p>Paragraph 1</p>
+        <p>Paragraph 2</p>
+        <section>
+            <p>Paragraph 3</p>
+        </section>
+        <p>Paragraph 4</p>
+    </div>
+
+    <div>
+        <p>Paragraph 5</p>
+        <p>Paragraph 6</p>
+    </div>
+
+    <section class="demo">
+        <p>Paragraph 7</p>
+    <section>
+
+</body>
+
+</html>

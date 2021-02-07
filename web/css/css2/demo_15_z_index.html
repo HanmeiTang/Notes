@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS放在这里为方便演示，大家不要学我 -->
+    <style>
+        #box1 {
+            height: 300px;
+            width: 300px;
+            background-color: red;
+            position: absolute;
+        }
+
+        #box2 {
+            height: 300px;
+            width: 300px;
+            background-color: blue;
+            position: relative;
+            left: 10px;
+            top: 10px;
+        }
+
+        #box3 {
+            height: 300px;
+            width: 300px;
+            background-color: green;
+            position: fixed;
+            left: 30px;
+            top: 30px;
+        }
+
+        /* Uncomment to see  */
+        /* #box2 {
+            z-index: 1;
+        } */
+    </style>
+
+</head>
+
+<body>
+
+    <div id="box1">
+    </div>
+    <div id="box2">
+    </div>
+    <div id="box3">
+    </div>
+
+</html>

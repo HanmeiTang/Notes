@@ -1,0 +1,29 @@
+/*element selector*/
+h1 {
+    color: blue;
+}
+
+#heading1 {
+
+}
+
+* {
+
+}
+
+.heading1 {
+
+}
+
+a p {
+
+}
+
+/*pseudo class*/
+a:hover {
+
+}
+
+a > b {
+
+}

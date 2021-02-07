@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 写在这里方便演示，大家不要学我 -->
+    <style>
+        /* 
+            1. 有class这个attribute
+            2. attribute值为font-bold
+            3. p标签
+         */
+        /* p[class="font-bold"] {
+            color: red;
+        } */
+
+        /* 
+            1. 有class这个attribute
+            2. attribute值包含font-bold
+            3. p标签
+         */
+        /* p[class~="font-bold"] {
+            color: red;
+        } */
+
+        /* a[target] {
+            background-color: yellow;
+        } */
+
+        /* a[target="_self"] {
+            font-size: 40px;
+        } */
+    </style>
+</head>
+
+<body>
+
+    <!-- 
+        1. 他是一个p标签
+        2. 他有class这个属性
+        3. 属性值是font-bold
+     -->
+    <p class="font-bold">This is a paragrah</p>
+    <p class="font font-bold">This is a paragrah</p>
+
+    <!-- 
+        Practice:
+        1. 选择有target的a标签 
+        2. 选择target值为_self的a标签 
+    -->
+    <!-- <a href="https://www.w3schools.com">w3schools.com</a>
+    <a href="http://www.disney.com" target="_blank">disney.com</a>
+    <a href="http://www.disney.com" target="_self">disney.com</a> -->
+
+</body>
+
+</html>

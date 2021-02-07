@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <!-- 这样做的好处是什么呢？
+    1. css， html 的代码完全分离，方便代码管理和后续的代码维护
+    2. 一个css file负责一个模块，而不是所有css挤在一起
+    -->
+
+    <link rel="stylesheet" type="text/css" href="../css/demo_3_style1.css">
+
+    <!-- 
+    Tip: 引入的顺序可能会对样式产生印象，主要是因为同优先级下，后面的会覆盖前面的
+    但是我们一般是模块化开发，也就是说一个css file会去负责一个模块的样式，所以引入的
+    file基本不会相互引向
+    -->
+</head>
+<body>
+
+    <p>This is a paragraph</p>
+
+</body>
+</html>

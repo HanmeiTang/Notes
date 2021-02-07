@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>In line demo</title>
+</head>
+<body>
+<!--This is an inline JS-->
+<!--避免出现在html里，inline一般只有做调试才用-->
+<h1 onclick="alert('Hello from the body section')">
+    I am a heading
+</h1>
+
+<div>
+    Event described in Java
+
+    class Event {
+    type: Enum ("click" || "double click" || "hover")
+    x : 0
+    y : 0
+    }
+
+    Object onClickEvent = new Event("click", 0, 0)
+</div>
+
+<!--This is an inline JS-->
+<script type="text/javascript">
+    alert('hello')
+</script>
+
+<!--SCRIPT TAG 尽量放在后面，等待所有元素都已经load完毕之后再读-->
+<!--Q: 如果有多个scripts，顺序会不会有影响？-->
+<!--A: 有，有些变量没有加载会报错，因为js一行一行执行-->
+<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
+
+
