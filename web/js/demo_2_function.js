@@ -15,8 +15,7 @@ var myFunc2 = function (paras) {
 };
 
 // The method 2: function expression
-// define a function named 'myFunc'
-
+// define a function named 'myFunc3'
 var myFunc3 = function (paras) {
     console.log('this is my function');
     console.log(paras + 1);
