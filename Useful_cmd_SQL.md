@@ -234,6 +234,8 @@ So to store a person's name, we would use a text to type with a variable length,
 SELECT 4 + 2;  /* 6 */
 SELECT 1 / 3;  /* 0 */
 SELECT 1 / 3.0;  /* 0.3333; the take-away is don't reply to SQL math */
+
+SELECT COUNT(`COL A`) from some_table;
 ```
 
 #### Logic expressions:
@@ -397,10 +399,19 @@ WHERE first_name = 'Martha' AND last_name = 'White';
 DELETE FROM people 
 WHERE id_number IS NULL;
 ```
+## 5. Constraint
+#### Update a column to unique key
+```SQL
+ALTER TABLE Persons 
+ADD UNIQUE( `col to be unique`);
 
-## 5. Conclusion
+ALTER TABLE Persons
+MODIFY Age int NOT NULL;
+```
 
-### 5.1 Overcome common SQL mistakes
+## 6. Conclusion
+
+### 6.1 Overcome common SQL mistakes
 * Typos and syntax erors - read the error, break down statement.
 * Put text values in '**single quotes**'.
 * Put field names with spaces 'inside backticks'.
@@ -412,7 +423,7 @@ WHERE id_number IS NULL;
 * You should test your matching conditions before using them for a destructive action (`UPDATE`/`DELETE`).
 * Most software will run all of the statements in a window at once. You can select, or other wise isolate, the one(s) you want to run.
 
-### 5.2 Next steps
+### 6.2 Next steps
 
 #### Create and Administer Databases
 * Microsoft SQL Server 2016 Essential Training
