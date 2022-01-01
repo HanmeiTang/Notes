@@ -1,0 +1,29 @@
+#!/bin/bash
+# This is a git pull short-cut script
+# How to use:
+#    Add the following line to .bash_profile
+#    alias gitp='sh /Users/hanmeiTang/repos/.gitpull.sh'
+# put this script in "direcotory/to/your/repos/"
+# Rename this file to ".gitpush.sh"
+
+#title           :.gitpull.sh
+#description     :This script do git pull command for all Mavrl repos.
+#author		 :Hanmei Tang
+#date            :20160618
+#version         :0.2
+#usage1		 :bash .gitpull.sh
+#usage2		 :gitp (add "alias gitp='sh /Users/hanmeiTang/repos/.gitpull.sh'" to .bash_profile)
+#notes           :Put this script in repos/{pymatgen,pymatgen-db,pymacy,custodian,fireworks}
+#bash_version    :3.2.57(1)-release
+#==============================================================================
+repo="$HOME/repos/"
+echo '==================|Repos update|=================='
+
+for i in custodian pymacy pymatgen fireworks 'pymatgen-db' 'pymatgen-diffusion' 'hatGit' 'pycat' 'md-works' 'atomate'
+do
+  echo '-------' $i '-------'
+  cd $repo/$i
+  git pull
+  echo 'done!'
+done
+echo '====================|Done|===================='

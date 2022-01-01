@@ -1,0 +1,17 @@
+#!/bin/bash
+# This cleans all latex auxiliary files under a draft directory.
+
+draft_dir='/Users/hanmeiTang/research/draft'
+
+cd $draft_dir
+
+echo '-------------------------------------'
+echo 'The following files have been removed:'
+for i in $(echo acs-*.bib *.aux *.log *.lof *.synctex.gz *.blg *.fls *.fdb_latexmk)
+do 
+    echo $i
+done | grep -v \* | nl
+echo '-------------------------------------'
+
+# Mute warnings and errors
+rm acs-*.bib *.aux *.log *.lof *.synctex.gz *.blg *.fls *.fdb_latexmk  2> /dev/null 

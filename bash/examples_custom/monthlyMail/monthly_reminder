@@ -1,0 +1,12 @@
+#!/bin/bash -   
+#title          :monthly_reminder
+#description    :monthly_reminder.sh
+#author         :Hanmei Tang
+#date           :20160718
+#version        :1.0    
+#usage          :./monthly_reminder
+#notes          :       
+#bash_version   :3.2.57(1)-release
+#============================================================================
+
+mail -s "Todo list for this month!" hat003@eng.ucsd.edu < mail.txt

@@ -1,0 +1,26 @@
+" Enable syntax hightlight
+filetype plugin on
+" filetype plugin indent on
+set encoding=utf-8
+set ignorecase
+syntax on
+" set background=dark
+
+" File python.vim
+" set term=linux
+setlocal expandtab
+setlocal shiftwidth=4
+setlocal softtabstop=4
+set bs=2
+setlocal tabstop=4
+setlocal textwidth=120
+setlocal smarttab
+
+" Highlighting search matches
+set hlsearch
+
+" Show line number
+set number
+
+" Set <ESC> key to jk
+" inoremap jk <ESC>

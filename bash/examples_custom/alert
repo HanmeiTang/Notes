@@ -1,0 +1,5 @@
+#!/bin/bash
+for i in {1..5};
+do
+    afplay /System/Library/Sounds/Glass.aiff
+done

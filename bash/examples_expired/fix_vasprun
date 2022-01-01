@@ -1,0 +1,123 @@
+#!/bin/bash
+# This script fix vasprun.xml file:
+# 1. Fix the initialpos structure using a reference vasprun.xml.
+#   The "finalpos" structure of the reference vasprun.xml
+#   will be used as "initialpos" structure for current vasprun.xml
+# 2. Fix an incomplete vasprun.xml.
+#   The structure of last run will be use as "finalpos" structure
+#   Useful when your md workflow "TIMEOUT".
+#
+# Hanmei Tang
+# Feb 3, 2018
+
+help="
+This cml tool fixes vasprun.xml file.\n
+\n
+To fix the initialpos structure using a reference vasprun.xml:\n
+\$ fix_vasprun -r reference.xml broken.xml\n
+\n
+Or to fix an incomplete vasprun.xml:\n
+\$ fix_vasprun broken.xml"
+
+case "$1" in
+        --help | -h)
+            echo -e $help
+            exit
+            ;;
+        esac
+
+# 1. If reference file is provided
+while getopts ":r:" opt; do
+    case $opt in
+        r)
+            # Confirm the broken filename is given
+            if [ $# -lt 3 ]
+            then
+                echo "You should provide broken vasprun.xml path!" >&2
+                echo $help >&2
+                exit 1
+            fi
+            
+            # Check the reference file is complete
+            complete=$(grep -c modeling $OPTARG)
+            if [ $complete -lt 2 ]
+            then
+                echo Reference is NOT a complete file! Exit...
+                exit 1
+            fi
+
+            # Print file info and backup
+            echo "Backuped! Fixing --\> \($OPTARG\) --\> $3" >&2
+            cp $3 backup.xml
+   
+            # Get "finalpos" from reference, output to s.xml
+            r1=$(grep -n structure $OPTARG | tail -2 | head -1 | awk -F\: '{print $1}')
+            r2=$(grep -n structure $OPTARG | tail -1 | awk -F\: '{print $1}')
+            sed -n $r1,"$r2"p $OPTARG > s.xml
+            sed -i "s/finalpos/initialpos/" s.xml
+            
+            # Get begining-->head.xml and all rest part-->tail.xml
+            temp=$(grep -n structure $3 | head -1 | awk -F\: '{print $1}')
+            h2=$(($temp-1))
+            temp=$(grep -n structure $3 | head -2 | tail -1 | awk -F\: '{print $1}')
+            t1=$(($temp+1))
+            t2=$(cat $3 | wc -l)
+            sed -n "1,$h2"p $3 > head.xml
+            sed -n "$t1,$t2"p $3 > tail.xml
+            cat head.xml s.xml tail.xml > $3
+
+            echo "$3 is fixed using reference \($OPTARG\)!"
+            exit 0
+            ;;        
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
+    esac
+done
+
+# 2. If no reference file is provided
+# Confirm the filename is given
+if [ $# -ne 1 ]
+then
+    echo "You should provide broken vasprun.xml path!" >&2
+    echo $help >&2
+    exit 1
+fi
+
+# Check vasprun is completed or not
+complete=$(grep -c modeling $1)
+if [ $complete -gt 1 ]
+then
+    echo $1 is a completed! Exit...
+    exit 1
+fi
+
+# Print file info and backup
+echo "Backuped! Fixing $1..." >&2
+cp $1 bak.xml
+
+# Get last structure, output to s.xml
+s1=$(grep -n structure $1 | tail -2 | head -1 | awk -F\: '{print $1}')
+s2=$(grep -n structure $1 | tail -1 | awk -F\: '{print $1}')
+sed -n $s1,"$s2"p $1 > s.xml
+
+# Make s.xml a complete tail
+sed -i '1s/<structure>/<structure name="finalpos">/' s.xml
+echo '</modeling>' >> s.xml
+
+# Cut out the incomplete tail of the broken file
+c1=$(grep -n calculation $1 | tail -1 | awk -F\: '{print $1}')
+c2=$(cat $1 | wc -l)
+sed -i "$c1","$c2"d $1
+
+# Combine the structrue tail and vasprun.xml
+cat $1 s.xml > new.xml
+mv new.xml $1
+rm s.xml
+echo "Incomplete $1 fixed!"
+exit 0

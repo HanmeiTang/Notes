@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+"""
+This script returns relaxed structure "mvl-{#task_id}.cif" to current directory.
+"""
+
+from sys import exit, argv
+import getopt
+from matgendb.query_engine import QueryEngine, QueryError
+
+__author__ = "Hanmei Tang"
+__date__ = "December 9, 2017"
+
+
+def usage():
+    help_information = "mvl_str -c <db_config_file> <mvl_task_id> ... \n" \
+                       "mvl_str --config <db_config_file> <mvl_task_id> ...\n" \
+                       "mvl_str --help"
+    print(help_information)
+
+
+def get_id(arg_id_str):
+    if arg_id_str.startswith("mvl-"):
+        task_id_int = int(arg_id_str.split("mvl-")[1])
+    elif arg_id_str.isdigit():
+        task_id_int = int(arg_id_str)
+    else:
+        raise ValueError("Fail to parse task id!")
+    return task_id_int
+
+
+opts, args = None, None
+db_config, task_id, q = "", "", None
+
+# CML interface design
+try:
+    opts, args = getopt.getopt(argv[1:], "hc:", ["help", "config"])
+except getopt.GetoptError as err:
+    print(err)
+    usage()
+    exit(2)
+
+# Configuration
+for o, a in opts:
+    if o in ["-h", "--help"]:  # help information
+        usage()
+        exit(2)
+    if o in ["-c", "--config"]:  # db configuration
+        db_config = a
+        q = QueryEngine.from_config(db_config)
+
+# Query data
+assert len(args) > 0
+print("Fetching......")
+
+for i, task_id in enumerate(args):
+    task_id = get_id(task_id)
+    try:
+        structure = q.get_structure_from_id(task_id=task_id)
+        structure.to(filename="mvl-{}.cif".format(task_id))
+        print("Dump ({}/{}) mvl-{}.cif".format(i, len(args), task_id))
+    except QueryError as err:
+        print(err)
