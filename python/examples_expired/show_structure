@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+import glob
+from sys import exit, argv
+from pymatgen.core import Structure
+
+"""
+A convinient script to show structure information.
+"""
+
+__author__ = "Hanmei Tang"
+__date__ = "Jnn 17, 2017"
+
+# Help info
+if '-h' in argv or '--help' in argv:
+    print('A convinient script to show structure information.\n')
+    print('Usage: \n'
+          '$ show_structure.py :\n'
+          ' --> Show information for one "POSCAR*".\n'
+          ' --> or find CONTCAR* if no POSCAR* found.\n'
+          '$ show_structure.py Li.cif :\n'
+          ' --> Show information for any given structure.\n')
+    exit(0)
+
+
+def get_info(file):
+    """Get structure info with IOError handled."""
+    try:
+        files = glob.glob(file)
+        if len(files) == 0:
+            print("\nNo \'{}\' found in current directory!\n"
+                  "Exit...\n".format(file))
+
+        for f in files:
+            s = Structure.from_file(f)
+            return s, f
+    except:
+        print("\nError encountered in parsing \'{}\'!"
+              "\nExit...\n".format(file))
+        pass
+
+
+# No user specified structure
+if len(argv) == 1:
+    try:
+        s, f = get_info("POSCAR*")
+    except:
+        s, f = get_info("CONTCAR*")
+
+# User-specified structure
+else:
+    s, f = get_info(argv[1])
+
+print("----------------------------")
+print("{} ({}):".format(f, s.composition.reduced_formula))
+print("Number of atoms: {}".format(len(s)))
+print("Lengths: {:.3f} {:.3f} {:.3f}".format(*s.lattice.abc))
+print("Angles: {:.3f} {:.3f} {:.3f}".format(*s.lattice.angles))
+print("Volume: {:.3f}".format(s.lattice.volume))
+print("----------------------------")

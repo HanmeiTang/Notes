@@ -1,0 +1,43 @@
+#!/bin/bash
+# This script generates all phonon input sets for a given POSCAR file.
+# Author: Hanmei Tang
+# Last updated: May 27, 2017
+
+# Write POTCAR and KPOINTS
+python << END
+from pymatgen import Structure
+from pymacy.io.vasp.sets import MVLPhononRelaxSet, MVLPhononSet
+try:
+    s0 = Structure.from_file("POSCAR", False)
+except:
+    raise IOERROR("No POSCAR found!")
+print("----------------------------------------------")
+print("Formula: {}".format(s0.composition.reduced_formula))
+print("Number of sites: {}".format(s0.num_sites))
+print("Lattice: {} {} {}".format(*s0.lattice.abc))
+print("----------------------------------------------")
+m = MVLPhononSet(s0, user_incar_settings={})
+m.write_input(".")
+END
+
+# Backup POSCAR
+cp POSCAR POSCAR_orig
+
+# Change the dimension instead of using a supercell as the input
+phonopy -d --dim="1 1 1" -c POSCAR
+
+# Folder organization
+for i in $(echo POSCAR-[0-9]*)
+do 
+    n=$(echo $i|awk -F- '{print $2}')
+    mkdir disp-$n
+    mv $i disp-$n/POSCAR
+    printf "PREC = Accurate\nIBRION = -1\nENCUT = 520\nEDIFF = 1.0e-08\nISMEAR = 0\nSIGMA = 0.01\nIALGO = 38\nLREAL = .FALSE.\nLWAVE = .FALSE.\nLCHARG = .FALSE." > disp-$n/INCAR
+    cp KPOINTS disp-$n/KPOINTS
+    cp POTCAR disp-$n/POTCAR
+    cp /global/homes/h/hat003/template/phon_script disp-$n/submit_script
+    sed -i "s/jobname/pho-$n/" disp-$n/submit_script
+done
+
+rm POTCAR INCAR KPOINTS POSCAR SPOSCAR
+mv POSCAR_orig POSCAR

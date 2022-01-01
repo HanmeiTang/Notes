@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+from pymatgen.core import Structure
+from sys import exit, argv
+import fnmatch
+import os
+
+"""
+This script generates a pretty neb path from neb result.
+All atoms are included in final cif file.
+File structure example:
+   00/POSCAR..0[1-7]/POSCAR.. 08/POSCAR 
+or 00/POSCAR..0[1-7]/CONTCAR..08/POSCAR
+"""
+
+__author__ = "Hanmei Tang"
+__email__ = "hat003@eng.ucsd.edu"
+__date__ = "Aug 14, 2016"
+
+# Help info
+if '-h' in argv or '--help' in argv:
+    print('Usage: \n'
+          '$ neb_path.py :\n'
+          ' --> This generates a path based on '
+          '|POSCAR|...|CONTCAR|...|POSCAR|\n'
+          ' --> or based on POSCAR if no CONTCAR found.\n'
+          '$ neb_path.py POSCAR :\n'
+          ' --> This generates a path based on '
+          '|POSCAR|...|POSCAR|...|POSCAR|\n'
+          ' --> Useful for generate a inital_path.cif '
+          'when both POSCAR and CONTCAR exit.\n')
+    exit(0)
+
+# Get current directory
+neb_path = os.path.dirname(os.path.realpath('__file__')) + '/'
+
+# Get number of image
+collection = [int(file) for file in os.listdir('.') if (fnmatch.fnmatch(file, '[0-9][0-9]'))]
+imageN = max(collection)
+
+print('%s files are found!' % (imageN+1))
+
+# Set up inner files
+fileN = 'CONTCAR'
+if not (os.path.isfile('01/CONTCAR')):
+    if not (os.path.isfile('01/POSCAR')):
+        print('No 01/POSCAR, EXIT')
+        exit(0)
+    else:
+        fileN = 'POSCAR'
+
+if 'POSCAR' in argv:
+    fileN = 'POSCAR'
+
+# Append images.
+n_collection = {}
+for i in range(imageN + 1):
+    if i < 10:
+        n_collection[i] = '0' + str(i)
+    else:
+        n_collection[i] = str(i)
+
+poscar_files = {}
+for k, v in n_collection.items():
+    if k != 0 and k != imageN:
+        poscar_files[k] = v
+
+st_initial = Structure.from_file(neb_path + '00/POSCAR')
+l = [Structure.from_file(neb_path + v + '/' + fileN) for k, v in poscar_files.items()]
+l.append(Structure.from_file(neb_path + n_collection[imageN] + '/POSCAR'))
+
+for i in range(imageN):
+    for site in l[i].sites:
+        st_initial.append(site.species_string, site.frac_coords)
+if fileN == 'POSCAR':
+    st_initial.to(filename=neb_path + 'ini_path.cif')
+    print('ini_path.cif has been generated.')
+else:
+    st_initial.to(filename=neb_path + 'end_path.cif')
+    print('end_path.cif has been generated.')
+
+print('Done!')

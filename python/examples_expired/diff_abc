@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+
+from pymatgen.core import Structure, Lattice
+from sys import exit, argv
+import tabulate
+import os
+
+__author__ = "Hanmei Tang"
+__version__ = "1.0"
+__maintainer__ = "Hanmei Tang"
+__email__ = "hat003@eng.ucsd.edu"
+__date__ = "June 11, 2016"
+
+
+if '-h' in argv:
+    help_info = """
+    Usage: diff_abc POSCAR CONTCAR
+    Compare structure parameters before and after relaxation; print to screen.
+    """
+    print(help_info)
+    exit(0)
+
+
+current_dir = os.path.dirname(os.path.realpath('__file__')) + '/'
+s1 = Structure.from_file(current_dir + argv[1])
+s2 = Structure.from_file(current_dir + argv[2])
+
+
+table = [["Parameters", argv[1],argv[2]],
+         ["a", s1.lattice.a, s2.lattice.a],
+         ["b", s1.lattice.b, s2.lattice.b],
+         ["c", s1.lattice.c, s2.lattice.c],
+         ["vol", s1.lattice.volume, s2.lattice.volume],
+         ["Alpha", s1.lattice.angles[0], s2.lattice.angles[0]],
+         ["Beta", s1.lattice.angles[1], s2.lattice.angles[1]],
+         ["Gamma", s1.lattice.angles[2], s2.lattice.angles[2]]]
+
+print(tabulate.tabulate(table))
+

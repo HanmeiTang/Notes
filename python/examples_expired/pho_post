@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+import glob
+import os
+from sys import exit, argv
+
+import matplotlib.pyplot as plt
+from pymatgen.core import Structure
+from pymacy.phonon.phonon_tools import write_band_conf, write_pdos_conf
+from pymacy.phonon.phonon_tools import get_phonon_band_plot, \
+    get_phonon_pdos_plot
+
+__date__ = "May 31, 2017"
+
+"""
+This script perform the analysis for a completed phonon calculation.
+Generates band and pdos plots.
+
+Usage:
+    Run the script under a completed phonon folder. Required files:
+    ./disp-{001..ATOM_NUM}/vasprun.xml; ./POSCAR
+
+Test:
+    /global/homes/h/hat003/research/nasicon_han/mp-6699_NaMgPO4/test
+"""
+
+# Help message
+if '-h' in argv or '--help' in argv:
+    print('Usage: ')
+    print("This script perform the analysis "
+          "for a completed phonon calculation.\n"
+          "Generates band and pdos plots.\n"
+          "Usage:\n"
+          "Run the script under a completed phonon folder. Required files:\n"
+          "./disp-{001..ATOM_NUM}/vasprun.xml; ./POSCAR")
+    exit(0)
+
+
+def banner(words):
+    print("----------------------------------------------")
+    print(words)
+    print("----------------------------------------------")
+    if words == "Done":
+        print("-----------------------Done-----------------------")
+
+
+# Create FORCE_SET file
+file_num = len(glob.glob("disp-[0-9]*"))
+bashCommand = "phonopy -f disp-{" + "001..{:03d}".format(
+    file_num) + "}/vasprun.xml"
+os.system(bashCommand)
+banner("Created FORCE_SET file!")
+
+# Write band.conf and pdos.cof
+try:
+    s0 = Structure.from_file("POSCAR", False)
+    write_band_conf(s0, scaling=[1, 1, 1])
+    write_pdos_conf(s0, scaling=[1, 1, 1])
+except:
+    raise IOError("No POSCAR found!")
+
+banner("Wrote band.conf and pdos.cof!")
+
+# Generate raw data file and plot default band structure and pdos.
+os.system("sed -i s/READ/WRITE/ band.conf")
+os.system("phonopy -p -s band.conf")
+banner("Wrote band.yaml!")
+os.system("phonopy -p -s pdos.conf")
+banner("Wrote projected_dos.dat!")
+
+# <Too slow>
+# Plot phonon band structure using python.
+# p = get_phonon_band_plot(s0, "band.yaml", ylim=[-1, 5])
+# p.savefig("phonon_FD.pdf")
+# banner("Plotted phonon_FD.pdf!")
+
+# Plot phonon pDOS using python.
+# p = get_phonon_pdos_plot(s0, filename='partial_dos.dat')
+# p.savefig("pDOS.pdf")
+# banner("Plotted pDOS.pdf!")
+# banner("Done")

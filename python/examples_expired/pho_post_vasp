@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+import glob
+from sys import exit, argv
+from pymatgen.core import Structure
+from pymacy.phonon.phonon_tools import PhononAnalyzer
+
+"""
+Write yaml files containing analysis data for phonon calculation.
+"""
+
+# Help message
+if '-h' in argv or '--help' in argv:
+    print('Usage: ')
+    print('Write yaml files containing analysis data for phonon calculation.\n')
+    exit(0)
+
+for p in glob.glob("POSCAR*"):
+    structure = Structure.from_file(p)
+    for vasprun in glob.glob("vasprun.xml"):
+        pa = PhononAnalyzer(structure, fc_file=vasprun)
+        # This will create "band.yaml" data file under the same directory.
+        pa.get_phonon_band(num_q=5, write_band=True)
+        # This will create "partial_dos.dat" data file under the same directory.
+        pa.get_phonon_dos(mesh=[8, 8, 8], mode="partial", write_output=True)
+        print("Data build done!")
+    break

@@ -1,0 +1,33 @@
+#!/usr/bin/env python
+"""
+This script generates POSCAR_{md_id}_{cid}_{temp}_{step} to the current directory.
+"""
+from sys import exit, argv
+from pymacy.md.parse import MDDBManager
+
+__author__ = "Hanmei Tang"
+__date__ = "Jun 17, 2017"
+
+if '-h' in argv or '--help' in argv:
+    print('Usage: ')
+    print('$ md_get_structure.py :\n '
+          '--> Generate POSCAR_{md_id}_{cid}_{temp}_{step} '
+          'to the current directory.\n')
+    exit(0)
+try:
+    md_id = raw_input('MD id: ')
+    cid = raw_input('Config id: ')
+    temp = raw_input('Temperature: ')
+    step = raw_input('Step: ')
+except:
+    md_id = input('MD id: ')
+    cid = input('Config id: ')
+    temp = input('Temperature: ')
+    step = input('Step: ')
+configs = [int(m) for m in [md_id, cid, temp, step]]
+
+m = MDDBManager()
+st_0 = m.get_structure(*configs)
+st_0.to(filename="POSCAR_{}_{}_{}_{}".format(*configs), fmt="poscar")
+
+print("Dumped structure " + "POSCAR_{}_{}_{}_{}".format(*configs))
